@@ -4815,7 +4815,7 @@ impl<'db> TypeInferenceBuilder<'db> {
         self.types.syntax_diagnostics.extend(
             self.syntax_checker
                 .finish()
-                .map(|error| SyntaxDiagnostic::from_syntax_error(&error, file)),
+                .map(|error| SyntaxDiagnostic::from_syntax_error(error, file)),
         );
         self.types.shrink_to_fit();
         self.types
