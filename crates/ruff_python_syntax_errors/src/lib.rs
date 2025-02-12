@@ -3,6 +3,7 @@
 //! This checker is not responsible for traversing the AST itself. Instead, its
 //! [`SyntaxChecker::enter_stmt`] method should be called on every node by a parent `Visitor`.
 
+use ruff_db::python_version::PythonVersion;
 use ruff_python_ast::{Stmt, StmtExpr, StmtImportFrom, StmtMatch};
 use ruff_text_size::TextRange;
 
@@ -31,24 +32,6 @@ impl SyntaxChecker {
     pub fn finish(&self) -> impl Iterator<Item = &SyntaxError> {
         self.errors.iter()
     }
-}
-
-/// Representation of a Python version.
-///
-/// Based on the flexible implementation in the `red_knot_python_semantic` crate for easier
-/// interoperability.
-#[derive(Debug, Clone, Copy, Eq, PartialEq, Ord, PartialOrd, Hash)]
-pub struct PythonVersion {
-    pub major: u8,
-    pub minor: u8,
-}
-
-impl PythonVersion {
-    pub const PY39: PythonVersion = PythonVersion { major: 3, minor: 9 };
-    pub const PY310: PythonVersion = PythonVersion {
-        major: 3,
-        minor: 10,
-    };
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -144,10 +127,11 @@ mod tests {
     use std::path::Path;
 
     use insta::assert_debug_snapshot;
+    use ruff_db::python_version::PythonVersion;
     use ruff_python_ast::PySourceType;
     use ruff_python_trivia::textwrap::dedent;
 
-    use crate::{PythonVersion, SyntaxChecker, SyntaxError};
+    use crate::{SyntaxChecker, SyntaxError};
 
     /// Run [`check_syntax`] on a snippet of Python code.
     fn test_snippet(contents: &str, target_version: PythonVersion) -> Vec<SyntaxError> {

@@ -75,15 +75,6 @@ impl From<(u8, u8)> for PythonVersion {
     }
 }
 
-impl From<PythonVersion> for ruff_python_syntax_errors::PythonVersion {
-    fn from(value: PythonVersion) -> Self {
-        Self {
-            major: value.major,
-            minor: value.minor,
-        }
-    }
-}
-
 impl fmt::Display for PythonVersion {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let PythonVersion { major, minor } = self;
@@ -93,7 +84,7 @@ impl fmt::Display for PythonVersion {
 
 #[cfg(feature = "serde")]
 mod serde {
-    use crate::PythonVersion;
+    use super::PythonVersion;
 
     impl<'de> serde::Deserialize<'de> for PythonVersion {
         fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>

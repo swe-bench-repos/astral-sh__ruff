@@ -7,6 +7,7 @@ use indexmap::IndexSet;
 use itertools::Itertools;
 use ruff_db::diagnostic::Severity;
 use ruff_db::files::File;
+use ruff_db::python_version::PythonVersion;
 use ruff_python_ast as ast;
 use type_ordering::union_elements_ordering;
 
@@ -44,7 +45,7 @@ use crate::types::diagnostic::INVALID_TYPE_FORM;
 use crate::types::infer::infer_unpack_types;
 use crate::types::mro::{Mro, MroError, MroIterator};
 use crate::types::narrow::narrowing_constraint;
-use crate::{Db, FxOrderSet, Module, Program, PythonVersion};
+use crate::{Db, FxOrderSet, Module, Program};
 
 mod builder;
 mod call;
@@ -4860,9 +4861,9 @@ pub(crate) mod tests {
     use super::*;
     use crate::db::tests::{setup_db, TestDbBuilder};
     use crate::stdlib::typing_symbol;
-    use crate::PythonVersion;
     use ruff_db::files::system_path_to_file;
     use ruff_db::parsed::parsed_module;
+    use ruff_db::python_version::PythonVersion;
     use ruff_db::system::DbWithTestSystem;
     use ruff_db::testing::assert_function_query_was_not_run;
     use ruff_python_ast as ast;

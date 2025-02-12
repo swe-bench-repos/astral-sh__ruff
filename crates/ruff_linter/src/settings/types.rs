@@ -62,7 +62,7 @@ impl From<PythonVersion> for Pep440Version {
     }
 }
 
-impl From<PythonVersion> for ruff_python_syntax_errors::PythonVersion {
+impl From<PythonVersion> for ruff_db::python_version::PythonVersion {
     fn from(value: PythonVersion) -> Self {
         let (major, minor) = value.as_tuple();
         Self { major, minor }
